@@ -4,13 +4,14 @@
 
 ## Bắt đầu
 
+
 ### Cài đặt
 
-- Chạy lệnh: 'vue create todolist' để tạo dự án
+- Clone repository về máy tính của bạn: `https://github.com/leviettho0611/todo-List_Vuejs.git`
+- Mở thư mục của dự án và cài đặt các dependencies: `npm i`
 
 ### Chạy Ứng Dụng
 
-- Mở thư mục dự án
 - Chạy ứng dụng: npm run serve
 
 ## Các chức năng
