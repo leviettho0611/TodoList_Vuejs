@@ -16,9 +16,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(task, index) in tasks" :key="index" :class="{ 'selected-task': selectedTasks.includes(index) }">
+        <tr v-for="(value, index) in tasks" :key="index" :class="{ 'selected-task': selectedTasks.includes(index) }">
           <td><input type="checkbox" v-model="selectedTasks" :value="index"></td>
-          <th>{{ task.name }}</th>
+          <th>{{ value.task }}</th>
           <td class="text-center">
             <div>
               <button @click="editTask(index)" type="button" class="btn btn-warning">Edit</button>
@@ -52,12 +52,16 @@ export default {
     };
   },
   mounted() {
-    this.fetchTasks();
+    this.getTasks();
   },
   methods: {
-    async fetchTasks() {
+    async getTasks() {
       try {
-        const response = await fetch('https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task');
+        const response = await fetch('https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task',{
+          method: 'GET',
+          
+          // mode: "no-cors",
+        });
         const data = await response.json();
         this.tasks = data;
       } catch (error) {
@@ -74,10 +78,10 @@ export default {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name: this.task })
+            body: JSON.stringify({ task: this.task })
           });
           if (response.ok) {
-            this.tasks[this.editTaskIndex].name = this.task;
+            this.tasks[this.editTaskIndex].task = this.task;
             this.editTaskIndex = null;
           }
         } else {
@@ -86,7 +90,7 @@ export default {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name: this.task })
+            body: JSON.stringify({ task: this.task })
           });
           if (response.ok) {
             const data = await response.json();
@@ -99,7 +103,7 @@ export default {
       }
     },
     async editTask(index) {
-      this.task = this.tasks[index].name;
+      this.task = this.tasks[index].task;
       this.editTaskIndex = index;
     },
     async deleteTask(index){
