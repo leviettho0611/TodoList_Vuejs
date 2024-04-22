@@ -12,7 +12,7 @@
 
 ### Chạy Ứng Dụng
 
-- Chạy ứng dụng: npm run serve
+- Chạy ứng dụng: `npm run serve`
 
 ## Các chức năng
 
