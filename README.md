@@ -37,7 +37,7 @@
 
 ## Yêu Cầu
 
-- Node.js và npm được cài đặt trên máy tính của bạn.
+- Node.js và npm được cài đặt trên máy tính .
 
 ## Cách Sử Dụng
 
