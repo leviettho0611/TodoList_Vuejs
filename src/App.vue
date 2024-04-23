@@ -10,7 +10,9 @@
       <button class="btn btn-outline-secondary me-2" type="button">Register</button>
       </router-link>
       <router-link to="/TodoApp">
+
       <button class="btn btn-outline-secondary me-2" type="button">TodoApp</button>
+
     </router-link>
     </form>
   </nav>
