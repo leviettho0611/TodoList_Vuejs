@@ -2,10 +2,9 @@
   <div class="container">
     <h2 class="text-center">TO DO LIST</h2>
     <div class="d-flex">
-      <input v-model="task" type="text" class="form-control my-3" placeholder="" aria-label="" aria-describedby="basic-addon1">
+      <input v-model="taskName" type="text" class="form-control my-3" placeholder="" aria-label="" aria-describedby="basic-addon1">
       <button @click="addTask" type="button" class="btn btn-default rounded-0 my-3 shadow-sm bg-body rounded-1">Add</button>
     </div>
-    <!-- table-striped: kẻ sọc bảng -->
     <table class="table table-striped table-dark ">
       <thead>
         <tr>
@@ -16,9 +15,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(value, index) in tasks" :key="index" :class="{ 'selected-task': selectedTasks.includes(index) }">
-          <td><input type="checkbox" v-model="selectedTasks" :value="index"></td>
-          <th>{{ value.task }}</th>
+        <tr v-for="(task, index) in tasks" :key="task.id" :class="{ 'selected-task': selectedTasks.includes(task.id) }">
+          <td><input type="checkbox" v-model="selectedTasks" :value="task.id"></td>
+          <th class="text-center">{{ task.task_name }}</th>
           <td class="text-center">
             <div>
               <button @click="editTask(index)" type="button" class="btn btn-warning">Edit</button>
@@ -26,7 +25,7 @@
           </td>
           <td class="text-center">
             <div>
-              <button @click="deleteTask(index)" type="button" class="btn btn-danger">Delete</button>
+              <button @click="deleteTask(task.id)" type="button" class="btn btn-danger">Delete</button>
             </div>
           </td>
         </tr>
@@ -38,174 +37,132 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
+
 export default {
-  name: 'TodoApp',
-  props: {
-    msg: String,
-  },
-  data() {
-    return {
-      task: "",
-      editTaskIndex: null,
-      tasks: [],
-      selectedTasks: []
-    };
-  },
-  mounted() {
-    this.getTasks();
-  },
-  methods: {
-    async getTasks() {
+  setup() {
+    const taskName = ref("");
+    const editTaskIndex = ref(null);
+    const tasks = ref([]);
+    const selectedTasks = ref([]);
+
+    onMounted(async () => {
+       getTasks();
+    });
+
+    const getTasks = async () => {
       try {
-        const response = await fetch('https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task',{
+        const response = await fetch('http://10.20.14.45:8080/api/tasks/', {
           method: 'GET',
-          
-          // mode: "no-cors",
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
         const data = await response.json();
-        this.tasks = data;
+        tasks.value = data;
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
-    },
-    async addTask() {
-      if (this.task.length === 0) 
+    };
+
+    const addTask = async () => {
+      if (taskName.value.length === 0) 
         return;
       try {
-        if (this.editTaskIndex != null) {
-          const response = await fetch(`https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task/${this.tasks[this.editTaskIndex].id}`, {
+        if (editTaskIndex.value !== null) {
+          const response = await fetch(`http://10.20.14.45:8080/api/tasks/${tasks.value[editTaskIndex.value].id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ task: this.task })
+            body: JSON.stringify({ task_name: taskName.value })
           });
           if (response.ok) {
-            this.tasks[this.editTaskIndex].task = this.task;
-            this.editTaskIndex = null;
+            tasks.value[editTaskIndex.value].task_name = taskName.value;
+            editTaskIndex.value = null;
           }
         } else {
-          const response = await fetch('https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task', {
+          const response = await fetch('http://10.20.14.45:8080/api/tasks/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ task: this.task })
+            body: JSON.stringify({ task_name: taskName.value })
           });
           if (response.ok) {
             const data = await response.json();
-            this.tasks.push(data);
+            tasks.value.push(data);
           }
         }
-        this.task = "";
+        taskName.value = "";
       } catch (error) {
         console.error('Error adding task:', error);
       }
-    },
-    async editTask(index) {
-      this.task = this.tasks[index].task;
-      this.editTaskIndex = index;
-    },
-    async deleteTask(index){
-      try{
-        const response = await fetch(`https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task/${this.tasks[index].id}`,{
+    };
+
+    const editTask = (index) => {
+      taskName.value = tasks.value[index].task_name;
+      editTaskIndex.value = index;
+    };
+
+    const deleteTask = async (taskId) => {
+      try {
+        const response = await fetch(`http://10.20.14.45:8080/api/tasks/${taskId}`, {
           method: 'DELETE'
         });
-        if(response.ok){
-          this.tasks.splice(index,1);
+        if (response.ok) {
+          const index = tasks.value.findIndex(task => task.id === taskId);
+          tasks.value.splice(index, 1);
         }
-      }catch(error){
+      } catch (error) {
         console.error('Error deleting task:', error);
       }
-    },
-    async deleteSelectedTasks(){
-      try{
-        this.selectedTasks.sort((a, b) => b - a);
-        for (const index of this.selectedTasks){
-          const response = await fetch(`https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task/${this.tasks[index].id}`,{
-            method: 'DELETE'
-          });
-          if(response.ok){
-            this.tasks.splice(index, 1);
-          }
-        }
-        this.selectedTasks = [];
-      }catch(error){
-        console.error('Error delete selected tasks:', error);
-      }
-    },
-    async deleteAllTasks() {
+    };
+
+    const deleteSelectedTasks = async () => {
       try {
-        for (const task of this.tasks) {
-          const response = await fetch(`https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task/${task.id}`, {
+        selectedTasks.value.sort((a, b) => b - a);
+        for (const taskId of selectedTasks.value) {
+          const response = await fetch(`http://10.20.14.45:8080/api/tasks/${taskId}`, {
             method: 'DELETE'
           });
           if (response.ok) {
-            this.tasks = [];
+            const index = tasks.value.findIndex(task => task.id === taskId);
+            tasks.value.splice(index, 1);
+          }
+        }
+        selectedTasks.value = [];
+      } catch (error) {
+        console.error('Error delete selected tasks:', error);
+      }
+    };
+
+    const deleteAllTasks = async () => {
+      try {
+        for (const task of tasks.value) {
+          const response = await fetch(`http://10.20.14.45:8080/api/tasks/${task.id}`, {
+            method: 'DELETE'
+          });
+          if (response.ok) {
+            tasks.value = [];
           }
         }
       } catch (error) {
         console.error('Error deleting all tasks:', error);
       }
-    }
-  }
+    };
 
-  // data() {
-  //   return {
-  //     task: "",
-  //     editTaskIndex: null,
-  //     tasks: [
-  //       { name: "do exercise", selected: false },
-  //       { name: "cook dinner", selected: false }
-  //     ],
-  //     selectedTasks: []
-  //   };
-  // },
-  // mounted() {
-  //   this.getData();
-  // },
-  // methods: {
-  //   async getData() {
-  //     try {
-  //       const response = await fetch('https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task');
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch data');
-  //       }
-  //       const data = await response.json();
-  //       this.tasks = data;
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   },
-  //   // addTask() {
-  //   //   if (this.task.length === 0) 
-  //   //     return;
-  //   //   if (this.editTaskIndex != null) {
-  //   //     this.tasks[this.editTaskIndex].name = this.task;
-  //   //     this.editTaskIndex = null;
-  //   //   } else {
-  //   //     this.tasks.push({ name: this.task, selected: false });
-  //   //   }
-  //   //   this.task = "";
-  //   // },
-  //   editTask(index) {
-  //     this.task = this.tasks[index].name;
-  //     this.editTaskIndex = index;
-  //   },
-  //   // deleteTask(index) {
-  //   //   this.tasks.splice(index, 1);
-  //   // },
-  //   deleteSelectedTasks() {
-  //     this.selectedTasks.sort((a, b) => b - a);
-  //     this.selectedTasks.forEach(index => {
-  //       this.tasks.splice(index, 1);
-  //     });
-  //     this.selectedTasks = [];
-  //   },
-  //   deleteAllTasks() {
-  //     this.tasks = [];
-  //   }
-  // }
+    return {
+      taskName,
+      tasks,
+      selectedTasks,
+      addTask,
+      editTask,
+      deleteTask,
+      deleteSelectedTasks,
+      deleteAllTasks
+    };
+  }
 }
 </script>
 
