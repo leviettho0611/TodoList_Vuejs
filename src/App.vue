@@ -10,7 +10,7 @@
       <button class="btn btn-outline-success me-2" type="button">Register</button>
       </router-link>
       <router-link to="/TodoApp">
-      <button class="btn btn-outline-success me-2" type="button">Smaller button</button>
+      <button class="btn btn-outline-success me-2" type="button">Todo List</button>
     </router-link>
     </form>
   </nav>
