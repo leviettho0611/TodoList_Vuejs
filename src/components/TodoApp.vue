@@ -10,20 +10,20 @@
         <tr>
           <th scope="col"></th>
           <th scope="col">Task</th>
-          <th scope="col" style="text-center">Edit</th>
-          <th scope="col" style="text-center">Delete</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(task, index) in tasks" :key="task.id" :class="{ 'selected-task': selectedTasks.includes(task.id) }">
           <td><input type="checkbox" v-model="selectedTasks" :value="task.id"></td>
-          <th class="text-center">{{ task.task_name }}</th>
-          <td class="text-center">
+          <th>{{ task.task_name }}</th>
+          <td>
             <div>
               <button @click="editTask(index)" type="button" class="btn btn-warning">Edit</button>
             </div>
           </td>
-          <td class="text-center">
+          <td>
             <div>
               <button @click="deleteTask(task.id)" type="button" class="btn btn-danger">Delete</button>
             </div>
