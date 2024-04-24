@@ -1,7 +1,7 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <!-- <div id="app"> -->
-  <nav class="navbar navbar-light bg-light">
+  <!-- <nav class="navbar navbar-light bg-light">
     <form class="container-fluid justify-content-start">
       <router-link to="/Login">
       <button class="btn btn-outline-secondary me-2" type="button">Login</button>
@@ -15,8 +15,9 @@
 
     </router-link>
     </form>
-  </nav>
-  <Router-view></Router-view>
+  </nav> -->
+<DefaultLayout></DefaultLayout>
+  <!-- <Router-view></Router-view> -->
   <!-- <LoginPage></LoginPage>
   <HomePage></HomePage>
   <TodoApp></TodoApp> -->
@@ -27,13 +28,12 @@
 // import LoginPage from './components/pages/LoginPage.vue';
 // import HomePage from './components/pages/HomePage.vue';
 
+import DefaultLayout from './layouts/DefaultLayout.vue';
 export default {
-  // name: 'App',
-  // components: {
-  //   TodoApp,
-  //   LoginPage, 
-  //   HomePage
-  // }
+  name: 'App',
+  components: {
+    DefaultLayout
+  }
 }
 </script>
 

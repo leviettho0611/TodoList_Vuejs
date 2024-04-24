@@ -41,8 +41,9 @@
       </div>
   </template>
   
-  <script>
+  <!-- <script>
 import { ref } from 'vue';
+import axios from 'axios';
   export default {
     setup(){
         const name = ref('');
@@ -55,7 +56,7 @@ import { ref } from 'vue';
         const register = async () =>{
           // console.log('register');
             try{
-                const response = await fetch('http://10.20.14.45:8080/api/auth/signup',{
+                const response = await axios('http://10.20.14.45:8080/api/auth/signup',{
                     method: 'POST',
                     headers:{
                         'Content-Type': 'application/json'
@@ -80,7 +81,45 @@ import { ref } from 'vue';
         }
     };
 
+  </script> -->
+  <script>
+  import { ref } from 'vue';
+  import axios from 'axios';
+  
+  export default {
+    setup() {
+      const name = ref('');
+      const username = ref('');
+      const email = ref('');
+      const password = ref('');
+      const errorMessage = ref('');
+  
+      const register = async () => {
+        try {
+          const response = await axios.post('http://10.20.14.45:8080/api/auth/signup', {
+            name: name.value,
+            username: username.value,
+            email: email.value,
+            password: password.value
+          });
+  
+          if (response.status !== 200) {
+            throw new Error('Register failed');
+          }
+  
+          // Xử lý dữ liệu trả về nếu cần
+          console.log(response.data);
+        } catch (error) {
+          errorMessage.value = 'Register failed. Please try again.';
+          console.error(error);
+        }
+      };
+  
+      return { name, username, email, password, errorMessage, register };
+    }
+  };
   </script>
+  
 <style scoped>
 .background {
   background-image: url('https://i.pinimg.com/originals/3d/c4/49/3dc449b04d9ace524a0ecd247e1fdc83.png'); /* Thay 'background-image.jpg' bằng đường dẫn đến hình nền của bạn */

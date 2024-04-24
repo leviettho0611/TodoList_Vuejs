@@ -36,9 +36,9 @@
   </div>
 </template>
 
-<script>
+<!-- <script>
 import { ref, onMounted } from 'vue';
-
+import axios from 'axios';
 export default {
   setup() {
     const taskName = ref("");
@@ -52,7 +52,7 @@ export default {
 
     const getTasks = async () => {
       try {
-        const response = await fetch('http://10.20.14.45:8080/api/tasks/', {
+        const response = await axios('https://6621d86427fcd16fa6c80deb.mockapi.io/api/todo/task', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export default {
         const data = await response.json();
         tasks.value = data;
       } catch (error) {
-        console.error('Error fetching tasks:', error);
+        console.error('Error axios tasks:', error);
       }
     };
 
@@ -70,7 +70,7 @@ export default {
         return;
       try {
         if (editTaskIndex.value !== null) {
-          const response = await fetch(`http://10.20.14.45:8080/api/tasks/${tasks.value[editTaskIndex.value].id}`, {
+          const response = await axios(`http://10.20.14.45:8080/api/tasks/${tasks.value[editTaskIndex.value].id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
@@ -82,7 +82,7 @@ export default {
             editTaskIndex.value = null;
           }
         } else {
-          const response = await fetch('http://10.20.14.45:8080/api/tasks/', {
+          const response = await axios('http://10.20.14.45:8080/api/tasks/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -107,7 +107,7 @@ export default {
 
     const deleteTask = async (taskId) => {
       try {
-        const response = await fetch(`http://10.20.14.45:8080/api/tasks/${taskId}`, {
+        const response = await axios(`http://10.20.14.45:8080/api/tasks/${taskId}`, {
           method: 'DELETE'
         });
         if (response.ok) {
@@ -123,7 +123,7 @@ export default {
       try {
         selectedTasks.value.sort((a, b) => b - a);
         for (const taskId of selectedTasks.value) {
-          const response = await fetch(`http://10.20.14.45:8080/api/tasks/${taskId}`, {
+          const response = await axios(`http://10.20.14.45:8080/api/tasks/${taskId}`, {
             method: 'DELETE'
           });
           if (response.ok) {
@@ -140,10 +140,115 @@ export default {
     const deleteAllTasks = async () => {
       try {
         for (const task of tasks.value) {
-          const response = await fetch(`http://10.20.14.45:8080/api/tasks/${task.id}`, {
+          const response = await axios(`http://10.20.14.45:8080/api/tasks/${task.id}`, {
             method: 'DELETE'
           });
           if (response.ok) {
+            tasks.value = [];
+          }
+        }
+      } catch (error) {
+        console.error('Error deleting all tasks:', error);
+      }
+    };
+
+    return {
+      taskName,
+      tasks,
+      selectedTasks,
+      addTask,
+      editTask,
+      deleteTask,
+      deleteSelectedTasks,
+      deleteAllTasks
+    };
+  }
+}
+</script> -->
+<script>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+export default {
+  setup() {
+    const taskName = ref("");
+    const editTaskIndex = ref(null);
+    const tasks = ref([]);
+    const selectedTasks = ref([]);
+
+    onMounted(async () => {
+       getTasks();
+    });
+
+    const getTasks = async () => {
+      try {
+        const response = await axios.get('http://10.20.14.45:8080/api/tasks/');
+        tasks.value = response.data;
+      } catch (error) {
+        console.error('Error axios tasks:', error);
+      }
+    };
+
+    const addTask = async () => {
+      if (taskName.value.length === 0) 
+        return;
+      try {
+        if (editTaskIndex.value !== null) {
+          const response = await axios.put(`http://10.20.14.45:8080/api/tasks/${tasks.value[editTaskIndex.value].id}`, { task_name: taskName.value });
+          if (response.status === 200) {
+            tasks.value[editTaskIndex.value].task_name = taskName.value;
+            editTaskIndex.value = null;
+          }
+        } else {
+          const response = await axios.post('http://10.20.14.45:8080/api/tasks/', { task_name: taskName.value });
+          if (response.status === 200) {
+            tasks.value.push(response.data);
+          }
+        }
+        taskName.value = "";
+      } catch (error) {
+        console.error('Error adding task:', error);
+      }
+    };
+
+    const editTask = (index) => {
+      taskName.value = tasks.value[index].task_name;
+      editTaskIndex.value = index;
+    };
+
+    const deleteTask = async (taskId) => {
+      try {
+        const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${taskId}`);
+        if (response.status === 200) {
+          const index = tasks.value.findIndex(task => task.id === taskId);
+          tasks.value.splice(index, 1);
+        }
+      } catch (error) {
+        console.error('Error deleting task:', error);
+      }
+    };
+
+    const deleteSelectedTasks = async () => {
+      try {
+        selectedTasks.value.sort((a, b) => b - a);
+        for (const taskId of selectedTasks.value) {
+          const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${taskId}`);
+          if (response.status === 200) {
+            const index = tasks.value.findIndex(task => task.id === taskId);
+            tasks.value.splice(index, 1);
+          }
+        }
+        selectedTasks.value = [];
+      } catch (error) {
+        console.error('Error delete selected tasks:', error);
+      }
+    };
+
+    const deleteAllTasks = async () => {
+      try {
+        for (const task of tasks.value) {
+          const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${task.id}`);
+          if (response.status === 200) {
             tasks.value = [];
           }
         }

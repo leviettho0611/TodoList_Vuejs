@@ -30,8 +30,9 @@
     <!-- </div> -->
   </template>
   
-  <script>
+  <!-- <script>
   import { ref } from 'vue';
+  import axios from 'axios';
   export default {
     setup() {
     const email = ref('');
@@ -40,7 +41,7 @@
 
     const login = async () => {
       try {
-        const response = await fetch('http://10.20.14.45:8080/api/auth/signin', {
+        const response = await axios('http://10.20.14.45:8080/api/auth/signin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -64,7 +65,37 @@
     return { email, password, errorMessage, login };
   }
   };
-  </script>
+  </script> -->
+  <script>
+  import { ref } from 'vue';
+  import axios from 'axios';
+
+  export default {
+    setup() {
+      const email = ref('');
+      const password = ref('');
+      const errorMessage = ref('');
+
+      const login = async () => {
+        try {
+          const response = await axios.post('http://10.20.14.45:8080/api/auth/signin', {
+            usernameOrEmail: email.value,
+            password: password.value
+          });
+
+          if (response.status !== 200) {
+            throw new Error('Login failed');
+          }
+        } catch (error) {
+          errorMessage.value = 'Login failed. Please try again.';
+        }
+      };
+
+      return { email, password, errorMessage, login };
+    }
+  };
+</script>
+
 <style scoped>
 /* .container {
   max-width: 600px;
