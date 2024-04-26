@@ -85,6 +85,7 @@ import axios from 'axios';
   <script>
   import { ref } from 'vue';
   import axios from 'axios';
+  import { useRouter } from 'vue-router';
   
   export default {
     setup() {
@@ -93,7 +94,7 @@ import axios from 'axios';
       const email = ref('');
       const password = ref('');
       const errorMessage = ref('');
-  
+      const router = useRouter();
       const register = async () => {
         try {
           const response = await axios.post('http://10.20.14.45:8080/api/auth/signup', {
@@ -102,11 +103,10 @@ import axios from 'axios';
             email: email.value,
             password: password.value
           });
-  
           if (response.status !== 200) {
             throw new Error('Register failed');
           }
-  
+          router.replace({ name: 'TodoApp' });
           // Xử lý dữ liệu trả về nếu cần
           console.log(response.data);
         } catch (error) {
@@ -114,7 +114,6 @@ import axios from 'axios';
           console.error(error);
         }
       };
-  
       return { name, username, email, password, errorMessage, register };
     }
   };
@@ -122,7 +121,7 @@ import axios from 'axios';
   
 <style scoped>
 .background {
-  background-image: url('https://i.pinimg.com/originals/3d/c4/49/3dc449b04d9ace524a0ecd247e1fdc83.png'); /* Thay 'background-image.jpg' bằng đường dẫn đến hình nền của bạn */
+  background-image: url('https://i.pinimg.com/originals/3d/c4/49/3dc449b04d9ace524a0ecd247e1fdc83.png'); 
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -130,11 +129,10 @@ import axios from 'axios';
   justify-content: center;
   align-items: center;
 }
-
 .container {
-  background-color: rgba(255, 255, 255, 0.8); /* Màu nền của form */
+  background-color: rgba(255, 255, 255, 0.8); 
   padding: 20px;
   border-radius: 10px;
-  width: 400px; /* Độ rộng của form */
+  width: 400px; 
 }
 </style>

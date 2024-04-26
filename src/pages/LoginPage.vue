@@ -69,12 +69,13 @@
   <script>
   import { ref } from 'vue';
   import axios from 'axios';
-
+  import { useRouter } from 'vue-router';
   export default {
     setup() {
       const email = ref('');
       const password = ref('');
       const errorMessage = ref('');
+      const router = useRouter();
 
       const login = async () => {
         try {
@@ -82,31 +83,26 @@
             usernameOrEmail: email.value,
             password: password.value
           });
-
-          if (response.status !== 200) {
+          if (response.status === 200) {
+            localStorage.setItem('accessToken', response.data.accessToken);
+            console.log(response.data.accessToken); 
+            router.push('/TodoApp');
+          } else {
             throw new Error('Login failed');
           }
         } catch (error) {
           errorMessage.value = 'Login failed. Please try again.';
         }
       };
-
       return { email, password, errorMessage, login };
     }
   };
 </script>
 
 <style scoped>
-/* .container {
-  max-width: 600px;
-  background-color: #f0f0f0;
-} */
 
-/* .selected-task {
-  text-decoration: line-through;
-} */
 .background {
-  background-image: url('https://img.thuthuatphanmem.vn/uploads/2018/09/27/wallpaper-4k_105912678.jpg'); /* Thay 'background-image.jpg' bằng đường dẫn đến hình nền của bạn */
+  background-image: url('https://img.thuthuatphanmem.vn/uploads/2018/09/27/wallpaper-4k_105912678.jpg');
   background-size: cover;
   background-position: center;
   min-height: 100vh;

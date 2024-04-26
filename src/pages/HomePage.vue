@@ -2,7 +2,7 @@
     <div>
     <!-- <router-link to="/Login">Go to Login</router-link> -->
       <h2>Trang Home</h2>
-      <LoginPage></LoginPage>
+      <!-- <LoginPage></LoginPage> -->
       <!-- Thêm form đăng nhập vào đây -->
     </div>
   </template>
