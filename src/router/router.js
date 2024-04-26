@@ -1,75 +1,90 @@
+
+// router.beforeEach((to, from, next) => {
+//   const isAuthenticated = localStorage.getItem('authToken') !== null
+//   console(isAuthenticated);
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (!isAuthenticated) {
+//       next({ name: 'Sign-In' })
+//     } else {
+//       next()
+//     }
+//   } else if (to.matched.some(record => record.meta.requiresGuest)) {
+//     if (isAuthenticated) {
+//       next({ name: 'Main' })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
+
+// const router = createRouter({
+//   history: createWebHistory(),
+//   routes
+// });
+
+
+// export default router;
 import { createRouter, createWebHistory } from 'vue-router';
 
-// Import các component mà bạn muốn sử dụng trong router
 import TodoApp from '@/pages/TodoApp.vue';
 import HomePage from '@/pages/HomePage.vue';
 import LoginPage from '@/pages/LoginPage.vue';
 import RegisterPage from '@/pages/RegisterPage.vue';
-import checkLogin from '@/router/checkLogin.js';
-// import LogoutPage from '@/pages/LogoutPage.vue';
-// import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import LogoutPage from '@/pages/LogoutPage.vue';
 
 const routes = [
   {
-    path:'/',
-    name: 'HomePage',
-    meta: {
-      layout: "DefaultLayout"
-    },
-    component: HomePage
-  },
-  {
-    path: '/TodoApp',
-    name: 'TodoApp',
-    meta: {
-      layout: "DefaultLayout"
-    },
-    component: TodoApp
-   
-  },
-  {
-    path: '/login',
-    name: 'LoginPage',
-    meta: {
-      layout: "DefaultLayout",
-      requiresAuth: true
-    },
-    beforeEach: checkLogin,
-    component: LoginPage
-    
-  },
-  {
-    path: '/register',
-    name: 'RegisterPage',
-    meta: {
-      layout: "DefaultLayout",
-      
-    },
-    component: RegisterPage
-  },
-  // {
-  //   path: '/Logout',
-  //   name: 'LogoutPage',
-  //   component: LogoutPage
-  // },
+    component: DefaultLayout,
+    children: [
+      {
+        path:'/HomePage',
+        name: 'HomePage',
+        component: HomePage
+      },
+      {
+        path: '/TodoApp',
+        name: 'TodoApp',
+        meta: {
+          requiresAuth: true
+        },
+        component: TodoApp
+      },
+      {
+        path: '/login',
+        name: 'LoginPage',
+        component: LoginPage
+      },
+      {
+        path: '/register',
+        name: 'RegisterPage',
+        component: RegisterPage
+      },
+      {
+        path:'/logout',
+        name: 'LogoutPage',
+        component: LogoutPage
+      },
+    ]
+  }
 ];
-
-// router.beforeEach((to, from, next) => {
-//     // Kiểm tra xem route có yêu cầu xác thực không
-//     if (to.meta.requiresAuth) {
-//         // Nếu cần xác thực, sử dụng middleware checkLogin để kiểm tra đăng nhập
-//         checkLogin(to, from, next);
-//     } else {
-//         // Nếu không cần xác thực, cho phép tiếp tục điều hướng
-//         next();
-//     }
-// });
-
 
 const router = createRouter({
   history: createWebHistory(),
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('accessToken');
 
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next({ name: 'LoginPage' });
+  } else if (to.name === 'LoginPage' && isAuthenticated) {
+    next({ name: 'TodoApp' });
+  } else {
+    next();
+  }
+});
 export default router;

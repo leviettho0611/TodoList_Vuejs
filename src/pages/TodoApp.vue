@@ -2,8 +2,10 @@
   <div class="container">
     <h2 class="text-center">TO DO LIST</h2>
     <div class="d-flex">
-      <input v-model="taskName" type="text" class="form-control my-3" placeholder="" aria-label="" aria-describedby="basic-addon1">
-      <button @click="addTask" type="button" class="btn btn-default rounded-0 my-3 shadow-sm bg-body rounded-1">Add</button>
+      <input v-model="taskName" type="text" class="form-control my-3" placeholder="" aria-label=""
+        aria-describedby="basic-addon1">
+      <button @click="addTask" type="button"
+        class="btn btn-default rounded-0 my-3 shadow-sm bg-body rounded-1">Add</button>
     </div>
     <table class="table table-striped table-dark ">
       <thead>
@@ -175,14 +177,22 @@ export default {
     const editTaskIndex = ref(null);
     const tasks = ref([]);
     const selectedTasks = ref([]);
-
+    const accessToken = localStorage.getItem('accessToken');
     onMounted(async () => {
-       getTasks();
+      getTasks();
     });
-
+    // const accesToken = localStorage.getItem("accesToken");
+    // console.log(accesToken);
     const getTasks = async () => {
       try {
-        const response = await axios.get('http://10.20.14.45:8080/api/tasks/');
+        // const accessToken = localStorage.getItem('accessToken');
+        // console.log('accessToken:', accessToken); // Debugging
+        const response = await axios.get('http://10.20.14.45:8080/api/tasks/', {
+          headers: {
+            "content-type": "application/json",
+            "Authorization": `Bearer ${accessToken}`
+          },
+        });
         tasks.value = response.data;
       } catch (error) {
         console.error('Error axios tasks:', error);
@@ -190,19 +200,41 @@ export default {
     };
 
     const addTask = async () => {
-      if (taskName.value.length === 0) 
+      // const accessToken = localStorage.getItem('accessToken');
+      if (taskName.value.length === 0)
         return;
       try {
         if (editTaskIndex.value !== null) {
-          const response = await axios.put(`http://10.20.14.45:8080/api/tasks/${tasks.value[editTaskIndex.value].id}`, { task_name: taskName.value });
+          const response = await axios.put(`http://10.20.14.45:8080/api/tasks/${tasks.value[editTaskIndex.value].id}`, {
+            task_name: taskName.value
+          },
+            {
+              headers: {
+                "content-type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+              }
+            });
           if (response.status === 200) {
             tasks.value[editTaskIndex.value].task_name = taskName.value;
             editTaskIndex.value = null;
           }
+          console.log(accessToken);
         } else {
-          const response = await axios.post('http://10.20.14.45:8080/api/tasks/', { task_name: taskName.value });
-          if (response.status === 200) {
-            tasks.value.push(response.data);
+          const response = await axios.post('http://10.20.14.45:8080/api/tasks/', { task_name: taskName.value },
+            {
+              headers: {
+                "content-type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+              }
+            });
+          if (response.status === 201) { {{console.log(response.data)}}
+            tasks.value.push(response.data
+              // {
+                
+              //   task_name: taskName.value
+              // },
+          );
+
           }
         }
         taskName.value = "";
@@ -217,10 +249,18 @@ export default {
     };
 
     const deleteTask = async (taskId) => {
+      // console.log(taskId);
       try {
-        const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${taskId}`);
+        const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${taskId}`,
+        {
+              headers: {
+                "content-type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+              }
+            });
         if (response.status === 200) {
           const index = tasks.value.findIndex(task => task.id === taskId);
+          console(index);
           tasks.value.splice(index, 1);
         }
       } catch (error) {
@@ -232,7 +272,13 @@ export default {
       try {
         selectedTasks.value.sort((a, b) => b - a);
         for (const taskId of selectedTasks.value) {
-          const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${taskId}`);
+          const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${taskId}`,
+          {
+              headers: {
+                "content-type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+              }
+            });
           if (response.status === 200) {
             const index = tasks.value.findIndex(task => task.id === taskId);
             tasks.value.splice(index, 1);
@@ -247,7 +293,13 @@ export default {
     const deleteAllTasks = async () => {
       try {
         for (const task of tasks.value) {
-          const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${task.id}`);
+          const response = await axios.delete(`http://10.20.14.45:8080/api/tasks/${task.id}`,
+          {
+              headers: {
+                "content-type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+              }
+            });
           if (response.status === 200) {
             tasks.value = [];
           }
@@ -260,6 +312,7 @@ export default {
     return {
       taskName,
       tasks,
+      getTasks,
       selectedTasks,
       addTask,
       editTask,
