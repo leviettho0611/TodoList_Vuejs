@@ -1,5 +1,8 @@
 <template>
+
   <div class="container">
+    
+   
     <h2 class="text-center">TO DO LIST</h2>
     <div class="d-flex">
       <input v-model="taskName" type="text" class="form-control my-3" placeholder="" aria-label=""
@@ -43,8 +46,7 @@
           </td>
           <td>
             <div>
-              <button class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#exampleEdit">Edit</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleEdit">Edit</button>
 
               <!-- <button @click="openEditModal(index)" type="button" class="btn btn-warning">Edit</button> -->
 
@@ -90,12 +92,10 @@
                   placeholder="Enter deletion status">
 
                 <label for="status">Status</label>
-                <input v-model="value.status" type="text" class="form-control" id="status"
-                  placeholder="Enter status">
+                <input v-model="value.status" type="text" class="form-control" id="status" placeholder="Enter status">
 
                 <label for="file">File</label>
-                <input v-model="value.file" type="text" class="form-control" id="file"
-                  placeholder="Enter file path">
+                <input v-model="value.file" type="text" class="form-control" id="file" placeholder="Enter file path">
               </div>
             </div>
           </div>
@@ -118,6 +118,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 export default {
+
   setup() {
 
     // const store = useStore();
