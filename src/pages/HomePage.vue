@@ -105,14 +105,12 @@ export default {
     // var endpoint = '/ws/?access_token=' + auth.access_token;
 // var socket = new SockJS(endpoint);
 // var stompClient = Stomp.over(socket);
-    // Function to connect to WebSocket and subscribe to a topic
     const connectWebSocket = () => {
       const url = 'http://10.20.14.45:8080/ws/?access_token=' + accessToken ; 
       const socket = new SockJS(url);
       const stomp = new Client({
         brokerURL: url,
         connectHeaders: {
-          // Add any connect headers if required
           "content-type": "application/json",
             "Authorization": `Bearer ${accessToken}`,
             // "Referer": 'http://10.20.14.45:8080'
@@ -129,7 +127,6 @@ export default {
           handleMessage(message);
         });
       };
-
       stomp.onDisconnect = () => {
         isConnected.value = false;
         console.log('Disconnected from WebSocket');
@@ -137,16 +134,12 @@ export default {
 
       stompClient.value = stomp;
     };
-
     const handleMessage = (message) => {
       console.log('Received message:', message.body);
-      // Process the incoming message as needed
     };
-
     onMounted(() => {
       connectWebSocket();
     });
-
     return {
       isConnected,
     };
