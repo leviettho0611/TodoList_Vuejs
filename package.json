@@ -16,6 +16,7 @@
     "socket.io": "^4.7.5",
     "sockjs-client": "^1.6.1",
     "vue": "^3.4.25",
+    "vue-awesome-paginate": "^1.1.46",
     "vue-router": "^4.0.13",
     "vue3-toastify": "^0.2.1",
     "webstomp-client": "^1.2.6"

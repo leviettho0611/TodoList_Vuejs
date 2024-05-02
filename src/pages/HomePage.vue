@@ -123,7 +123,7 @@ export default {
       stomp.onConnect = () => {
         isConnected.value = true;
         console.log('Connected to WebSocket');
-        stomp.subscribe('/api/tasks', (message) => {
+        stomp.subscribe('/topic/tasks', (message) => {
           handleMessage(message);
         });
       };

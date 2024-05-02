@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
+import VueAwesomePaginate from 'vue-awesome-paginate';
+import 'vue-awesome-paginate/dist/style.css';
 // import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -14,6 +16,7 @@ import '@fortawesome/fontawesome-free/js/all.js'
 
 const app = createApp(App)
 app.use(router)
+app.use(VueAwesomePaginate)
 app.mount('#app')
 // Vue.use(BootstrapVue)
 // Vue.use(IconsPlugin)
