@@ -5,7 +5,8 @@
 <script>
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 export default {
   setup() {
     const router = useRouter();
@@ -14,7 +15,7 @@ export default {
       try {
         const accessToken = localStorage.getItem('accessToken');
         console.log(accessToken);
-        await axios.post('http://10.20.14.45:8080/api/auth/signout',
+        await axios.post('auth/signout',
         {
               headers: {
                 "content-type": "application/json",
@@ -26,7 +27,11 @@ export default {
         localStorage.removeItem('accessToken');
         // Chuyển hướng người dùng đến trang đăng nhập
         router.replace({ name: 'LoginPage' });
-        console.log('Logout successful');
+        toast.success('Logout successful', {
+            position: 'top-right',
+            duration: 5000,
+          });
+        // console.log('Logout successful');
       } catch (error) {
         console.error('Logout error:', error);
       }

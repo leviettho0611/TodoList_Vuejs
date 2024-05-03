@@ -1,44 +1,16 @@
-
-// router.beforeEach((to, from, next) => {
-//   const isAuthenticated = localStorage.getItem('authToken') !== null
-//   console(isAuthenticated);
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     if (!isAuthenticated) {
-//       next({ name: 'Sign-In' })
-//     } else {
-//       next()
-//     }
-//   } else if (to.matched.some(record => record.meta.requiresGuest)) {
-//     if (isAuthenticated) {
-//       next({ name: 'Main' })
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
-
-// const router = createRouter({
-//   history: createWebHistory(),
-//   routes
-// });
-
-
-// export default router;
 import { createRouter, createWebHistory } from 'vue-router';
 
 import TodoApp from '@/pages/TodoApp.vue';
 import HomePage from '@/pages/HomePage.vue';
 import LoginPage from '@/pages/LoginPage.vue';
 import RegisterPage from '@/pages/RegisterPage.vue';
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
+// import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import LogoutPage from '@/pages/LogoutPage.vue';
 import MyTasks from '@/pages/MyTasks.vue'
 
 const routes = [
   {
-    component: DefaultLayout,
+    // component: DefaultLayout,
     children: [
       {
         path:'/HomePage',
@@ -99,3 +71,34 @@ router.beforeEach((to, from, next) => {
   }
 });
 export default router;
+
+
+
+
+// router.beforeEach((to, from, next) => {
+//   const isAuthenticated = localStorage.getItem('authToken') !== null
+//   console(isAuthenticated);
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (!isAuthenticated) {
+//       next({ name: 'Sign-In' })
+//     } else {
+//       next()
+//     }
+//   } else if (to.matched.some(record => record.meta.requiresGuest)) {
+//     if (isAuthenticated) {
+//       next({ name: 'Main' })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
+
+// const router = createRouter({
+//   history: createWebHistory(),
+//   routes
+// });
+
+
+// export default router;
