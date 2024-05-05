@@ -1,5 +1,4 @@
 <template>
-  
   <div class="background">
   <div class="container py-5 h-100 rounded-1">
     <div class="card">
@@ -12,7 +11,6 @@
             class="btn btn-default rounded-0 my-3 shadow-sm bg-body rounded-1 text-secondary">
             Add
           </button>
-
         </div>
         <div>
           <div class="input-group">
@@ -29,8 +27,8 @@
             </button>
           </router-link>
         </div>
-        <table class="table table-striped table-light ">
-          <thead class="fw-bold">
+        <table class="table">
+          <thead>
             <tr>
               <th>
                 <input type="checkbox" @click="checkAll ? uncheckAll() : toggleCheckAll()" />{{ checkAll }}
@@ -48,12 +46,12 @@
           <tbody>
             <tr v-for="task in searchQuery ? searchedTasks : tasks" :key="task.id"
               :class="{ 'selected-task': selectedTasks.includes(task.id) }">
-              <th>
+              <td>
                 <input type="checkbox" v-model="selectedTasks" :value="task.id" />
-              </th>
-              <th>{{ task.task_name }}</th>
-              <th>{{ task.completed }}</th>
-              <th :style="{ color: getlevel(task.level) }">
+              </td>
+              <td>{{ task.task_name }}</td>
+              <td>{{ task.completed }}</td>
+              <td :style="{ color: getlevel(task.level) }">
                 <div v-if="task.level == 0">
                   High
                 </div>
@@ -64,27 +62,27 @@
                   Low
                 </div>
 
-              </th>
+              </td>
 
-              <th>
+              <td>
                 <div v-if="task.status == 0">
                   Public
                 </div>
                 <div v-else>
                   Private
                 </div>
-              </th>
-              <th>
+              </td>
+              <td>
                 <img :src="task.file" class="img" alt="">
-              </th>
-              <th>{{ task.targetDate }}</th>
-              <th>
+              </td>
+              <td>{{ task.targetDate }}</td>
+              <td>
                 <button @click="editTask(task.id)" type="button"
                   class="btn btn-outline-primary rounded-0 my-3 shadow-sm bg-body rounded-1 text-secondary"
                   data-bs-toggle="modal" data-bs-target="#exampleEdit">
                   Edit
                 </button>
-              </th>
+              </td>
               <td>
                 <button @click="deleteTask(task.id)" type="button"
                   class="btn btn-outline-danger rounded-0 my-3 shadow-sm bg-body rounded-1 text-secondary">
@@ -194,6 +192,7 @@ export default {
     const getTasks = async () => {
       try {
         const response = await axios.get('tasks/');
+        // const response = await axios.get('tasks/');
         tasks.value = response.data;
       } catch (error) {
         console.error("Error axios tasks:", error);
@@ -348,13 +347,10 @@ export default {
   },
 
 }
-
 </script>
-
 <style scoped>
 .container {
   max-width: 900px;
-  /* background-color: #f0f0f0; */
 }
 .background {
   background-color:rgb(76, 83, 84);
@@ -368,9 +364,27 @@ export default {
 .selected-task {
   text-decoration: line-through;
 }
-
 .img {
   width: 50px;
   height: 50px;
+}
+th, td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+th, td {
+    width: calc(100% / 9); 
+}
+td{
+    line-height: 4;
+    font-weight: 400;
+}
+th{
+    line-height: 3;
+    background-color: #009970 !important;
+    color: white !important;
 }
 </style>

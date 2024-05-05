@@ -6,36 +6,72 @@
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Name</label>
           <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-            <input v-model="name" type="text" class="form-control" id="name" placeholder="Name">
+            <span class="input-group-text"
+              ><i class="bi bi-envelope-fill"></i
+            ></span>
+            <input
+              v-model="name"
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Name"
+            />
           </div>
         </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">UserName</label>
           <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-            <input v-model="username" type="text" class="form-control" id="username" placeholder="User Name">
+            <span class="input-group-text"
+              ><i class="bi bi-envelope-fill"></i
+            ></span>
+            <input
+              v-model="username"
+              type="text"
+              class="form-control"
+              id="username"
+              placeholder="User Name"
+            />
           </div>
         </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Email</label>
           <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-            <input v-model="email" type="email" class="form-control" id="email" placeholder="Email">
+            <span class="input-group-text"
+              ><i class="bi bi-envelope-fill"></i
+            ></span>
+            <input
+              v-model="email"
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Email"
+            />
           </div>
         </div>
         <div class="mb-3">
           <label for="exampleInputPassword1" class="form-label">Password</label>
           <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-            <input v-model="password" type="password" class="form-control" id="password" placeholder="Password">
+            <span class="input-group-text"
+              ><i class="bi bi-lock-fill"></i
+            ></span>
+            <input
+              v-model="password"
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+            />
           </div>
         </div>
         <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Remember me</label>
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+          <label class="form-check-label" for="exampleCheck1"
+            >Remember me</label
+          >
         </div>
-        <button type="submit" class="btn btn-outline-success">Submit</button>
+        <div class="text-end">
+          <button type="submit" class="btn btn-outline-success">Submit</button>
+        </div>
       </form>
     </div>
   </div>
@@ -83,45 +119,48 @@ import axios from 'axios';
 
   </script> -->
 <script>
-import { ref } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
-    const name = ref('');
-    const username = ref('');
-    const email = ref('');
-    const password = ref('');
-    const errorMessage = ref('');
+    const name = ref("");
+    const username = ref("");
+    const email = ref("");
+    const password = ref("");
+    const errorMessage = ref("");
     const router = useRouter();
     const register = async () => {
       try {
-        const response = await axios.post('http://10.20.14.45:8080/api/auth/signup', {
-          name: name.value,
-          username: username.value,
-          email: email.value,
-          password: password.value
-        });
+        const response = await axios.post(
+          "http://10.20.14.45:8080/api/auth/signup",
+          {
+            name: name.value,
+            username: username.value,
+            email: email.value,
+            password: password.value,
+          }
+        );
         if (response.status !== 200) {
-          throw new Error('Register failed');
+          throw new Error("Register failed");
         }
-        router.replace({ name: 'TodoApp' });
+        router.replace({ name: "TodoApp" });
         // Xử lý dữ liệu trả về nếu cần
         console.log(response.data);
       } catch (error) {
-        errorMessage.value = 'Register failed. Please try again.';
+        errorMessage.value = "Register failed. Please try again.";
         console.error(error);
       }
     };
     return { name, username, email, password, errorMessage, register };
-  }
+  },
 };
 </script>
 
 <style scoped>
 .background {
-  background-image: url('https://i.pinimg.com/originals/3d/c4/49/3dc449b04d9ace524a0ecd247e1fdc83.png');
+  background-image: url("https://i.pinimg.com/originals/3d/c4/49/3dc449b04d9ace524a0ecd247e1fdc83.png");
   background-size: cover;
   background-position: center;
   min-height: 100vh;

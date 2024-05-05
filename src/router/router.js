@@ -21,7 +21,7 @@ const routes = [
         path: '/TodoApp',
         name: 'TodoApp',
         meta: {
-          requiresAuth: true
+          // requiresAuth: true
         },
         component: TodoApp
       },

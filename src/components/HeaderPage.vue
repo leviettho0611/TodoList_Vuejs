@@ -12,9 +12,9 @@
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link mx-lg-2 active" aria-current="page" href="#">Home</a>
-            </li>
+            </li> -->
             <router-link to="/HomePage">
             <li class="nav-item">
               <a class="nav-link mx-lg-2 " aria-current="page" href="#">Home</a>
@@ -40,7 +40,7 @@
         </div>
       </div>
       <a class="login-button" href="#">Login</a>
-      <button class="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+      <button class="navbar-toggler pe-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
         aria-controls="offcanvasNavbar">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -82,7 +82,7 @@
   align-items: center;
 } */
 .navbar{
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
   height: 80px;
   border-radius: 16px;
   padding: 0.5rem;
@@ -93,12 +93,13 @@
   font-size: 24px;
   transition: 0.3s color;
 }
+
 .login-button {
-  background-color: #009970;
-  color: #fff;
+  color: #009970;
   font-size: 14px;
   padding: 8px 20px;
   border-radius: 50px;
+  border: 1px solid #009970;
   text-decoration: none;
   transition: 0.3s background-color;
 }
@@ -152,6 +153,9 @@
   .nav-link.active::before {
     width: 100%;
     visibility: visible;
+  }
+  .navbar-nav a{
+    text-decoration: none;
   }
 }
 </style>
