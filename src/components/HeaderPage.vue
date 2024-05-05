@@ -17,22 +17,22 @@
             </li> -->
             <router-link to="/HomePage">
             <li class="nav-item">
-              <a class="nav-link mx-lg-2 " aria-current="page" href="#">Home</a>
+              <a class="nav-link mx-lg-5 " aria-current="page" href="#">Home</a>
             </li>
           </router-link>
           <router-link to="/TodoApp">
             <li class="nav-item">
-              <a class="nav-link mx-lg-2" href="#">TodoApp</a>
+              <a class="nav-link mx-lg-5" href="#">TodoApp</a>
             </li>
           </router-link>
           <router-link to="/Register">
             <li class="nav-item">
-              <a class="nav-link mx-lg-2" href="#">Register</a>
+              <a class="nav-link mx-lg-5" href="#">Register</a>
             </li>
           </router-link>
           <router-link to="/Logout">
             <li class="nav-item">
-              <a class="nav-link mx-lg-2" href="#">Logout</a>
+              <a class="nav-link mx-lg-5" href="#">Logout</a>
             </li>
           </router-link>
           </ul>
