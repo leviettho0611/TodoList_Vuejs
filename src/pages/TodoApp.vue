@@ -175,6 +175,7 @@
 <script>
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
+import { useRoute } from 'vue-router';
 
 export default {
   setup() {
@@ -186,12 +187,17 @@ export default {
     const searchQuery = ref('');
     const searchedTasks = ref([]);
     const checkAll = ref(false);
+    const route = useRoute();
+    const projectId = route.params.projectId;
     onMounted(async () => {
-      getTasks();
+      // getTasks();
+      if (projectId) {
+        await getTasks(projectId);
+    }
     });
     const getTasks = async () => {
       try {
-        const response = await axios.get('tasks/');
+        const response = await axios.get('tasks/${projectId}');
         // const response = await axios.get('tasks/');
         tasks.value = response.data;
       } catch (error) {

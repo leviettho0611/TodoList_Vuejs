@@ -14,7 +14,8 @@ import axios from 'axios';
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-axios.defaults.baseURL = 'http://10.20.14.45:8080/api/';
+// axios.defaults.baseURL = 'http://10.20.14.45:8080/api/';
+axios.defaults.baseURL = 'https://662e6c86a7dda1fa378cebbe.mockapi.io/';
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
 axios.defaults.headers.common['content-type'] = 'application/json';
 const app = createApp(App)

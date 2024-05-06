@@ -19,10 +19,11 @@ const routes = [
         component: HomePage
       },
       {
-        path: '/TodoApp',
+        path: '/TodoApp/:projectId',
+        // path: '/TodoApp',
         name: 'TodoApp',
         meta: {
-          requiresAuth: true
+          // requiresAuth: true
         },
         component: TodoApp
       },
@@ -35,7 +36,7 @@ const routes = [
         path:'/ProjectPage',
         name: 'ProjectPage',
         meta: {
-          requiresAuth: true
+          // requiresAuth: true
         },
         component: ProjectPage
       },
