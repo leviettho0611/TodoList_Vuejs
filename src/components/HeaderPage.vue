@@ -1,10 +1,13 @@
 <template>
-  
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
       <router-link to="/HomePage">
-      <a class="navbar-brand me-auto" href="#">Logo</a>
-    </router-link>
+        <a class="navbar-brand me-auto" href="#">Logo</a>
+      </router-link>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
@@ -12,82 +15,98 @@
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
-            <!-- <li class="nav-item">
-              <a class="nav-link mx-lg-2 active" aria-current="page" href="#">Home</a>
-            </li> -->
             <router-link to="/HomePage">
-            <li class="nav-item">
-              <a class="nav-link mx-lg-5 " aria-current="page" href="#">Home</a>
+              <li class="nav-item">
+                <a class="nav-link mx-lg-5" aria-current="page" href="#">Home</a>
+              </li>
+            </router-link>
+            <router-link to="/TodoApp">
+              <li class="nav-item">
+                <a class="nav-link mx-lg-5" href="#">TodoApp</a>
+              </li>
+            </router-link>
+            <router-link to="/ProjectPage">
+              <li class="nav-item">
+                <a class="nav-link mx-lg-5" href="#">ProjectPage</a>
+              </li>
+            </router-link>
+            <li v-if="!isLoggedIn" class="nav-item">
+              <router-link to="/Register">
+                <a class="nav-link mx-lg-5" href="#">Register</a>
+              </router-link>
             </li>
-          </router-link>
-          <router-link to="/TodoApp">
-            <li class="nav-item">
-              <a class="nav-link mx-lg-5" href="#">TodoApp</a>
+            <li v-if="!isLoggedIn" class="nav-item">
+              <router-link to="/Login">
+                <a class="nav-link mx-lg-5" href="#">Login</a>
+              </router-link>
             </li>
-          </router-link>
-          <router-link to="/Register">
-            <li class="nav-item">
-              <a class="nav-link mx-lg-5" href="#">Register</a>
+            <li v-if="isLoggedIn" class="nav-item">
+              <a class="nav-link mx-lg-5" href="#" @click="handleLogout">Logout</a>
             </li>
-          </router-link>
-          <router-link to="/Logout">
-            <li class="nav-item">
-              <a class="nav-link mx-lg-5" href="#">Logout</a>
-            </li>
-          </router-link>
           </ul>
-
         </div>
       </div>
-      <a class="login-button" href="#">Login</a>
-      <button class="navbar-toggler pe-0 " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
     </div>
   </nav>
-
-  <!-- <div class="background">
-
-    <form class="container-fluid justify-content-start">
-      <router-link to="/HomePage">
-        <button class="btn btn-outline-secondary me-2" type="button">Home</button>
-      </router-link>
-      <router-link to="/Login">
-        <button class="btn btn-outline-secondary me-2" type="button">Login</button>
-      </router-link>
-      <router-link to="/Register">
-        <button class="btn btn-outline-secondary me-2" type="button">Register</button>
-      </router-link>
-      <router-link to="/TodoApp">
-        <button class="btn btn-outline-secondary me-2" type="button">TodoApp</button>
-      </router-link>
-      <router-link to="/Logout">
-        <button class="btn btn-outline-secondary me-2" type="button">Logout</button>
-      </router-link>
-    </form>
-
-  </div> -->
 </template>
 
+<script>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
-<style scoped="">
-/* .background {
-  background-color: rgb(76, 83, 84);
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-.navbar{
+export default {
+  setup() {
+    const isLoggedIn = ref(false);
+    const router = useRouter();
+
+    const handleLogout = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        await axios.post('auth/signout', {}, {
+          headers: {
+            "content-type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+          }
+        });
+        localStorage.removeItem('accessToken');
+        // router.replace({ name: 'LoginPage' });
+        router.push('/Login');
+        toast.success('Logout successful', {
+          position: 'top-right',
+          duration: 1000,
+        });
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    };
+
+    onMounted(() => {
+      isLoggedIn.value = localStorage.getItem('accessToken') ? true : false;
+    });
+
+    return {
+      isLoggedIn,
+      handleLogout
+    };
+  }
+}
+</script>
+
+
+
+
+<style scoped>
+.navbar {
   background-color: rgb(255, 255, 255);
-  height: 80px;
+  height: 60px;
   border-radius: 16px;
   padding: 0.5rem;
 }
-.navbar-brand{
+
+.navbar-brand {
   font-weight: 500;
   color: #009970;
   font-size: 24px;
@@ -154,7 +173,8 @@
     width: 100%;
     visibility: visible;
   }
-  .navbar-nav a{
+
+  a {
     text-decoration: none;
   }
 }

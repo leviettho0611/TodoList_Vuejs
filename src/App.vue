@@ -1,5 +1,5 @@
 <template>
-
+  
   <DefaultLayout/>
   <p v-if="isConnected"></p>
     <p v-else></p>

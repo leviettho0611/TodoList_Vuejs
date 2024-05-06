@@ -7,6 +7,7 @@ import RegisterPage from '@/pages/RegisterPage.vue';
 // import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import LogoutPage from '@/pages/LogoutPage.vue';
 import MyTasks from '@/pages/MyTasks.vue'
+import ProjectPage from '@/pages/ProjectPage.vue'
 
 const routes = [
   {
@@ -21,7 +22,7 @@ const routes = [
         path: '/TodoApp',
         name: 'TodoApp',
         meta: {
-          // requiresAuth: true
+          requiresAuth: true
         },
         component: TodoApp
       },
@@ -30,6 +31,14 @@ const routes = [
       //   name: 'HomePage',
       //   component: HomePage
       // },
+      {
+        path:'/ProjectPage',
+        name: 'ProjectPage',
+        meta: {
+          requiresAuth: true
+        },
+        component: ProjectPage
+      },
       {
         path:'/MyTasks',
         name: 'MyTasks',

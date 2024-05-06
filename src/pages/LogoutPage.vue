@@ -1,5 +1,8 @@
 <template>
-  <button @click="logout" type="button">Logout</button>
+  <div class="container">
+      <!-- <h2 class="text-center mb-4">Logout</h2> -->
+      <!-- <button @click="logout" type="button">Logout</button> -->
+  </div>
 </template>
 
 <script>
@@ -36,7 +39,7 @@ export default {
         console.error('Logout error:', error);
       }
     };
-    return { logout };
+    return  logout ;
   }
 };
 
