@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-      <router-link to="/HomePage">
+      <router-link to="/home-page">
         <a class="navbar-brand me-auto" href="#">Logo</a>
       </router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
@@ -15,7 +15,7 @@
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
-            <router-link to="/HomePage">
+            <router-link to="/home-page">
               <li class="nav-item">
                 <a class="nav-link mx-lg-5" aria-current="page" href="#">Home</a>
               </li>
@@ -25,23 +25,23 @@
                 <a class="nav-link mx-lg-5" href="#">TodoApp</a>
               </li>
             </router-link>
-            <router-link to="/ProjectPage">
+            <router-link to="/project-page">
               <li class="nav-item">
                 <a class="nav-link mx-lg-5" href="#">ProjectPage</a>
               </li>
             </router-link>
             <li v-if="!isLoggedIn" class="nav-item">
-              <router-link to="/Register">
+              <router-link to="/register">
                 <a class="nav-link mx-lg-5" href="#">Register</a>
               </router-link>
             </li>
             <li v-if="!isLoggedIn" class="nav-item">
-              <router-link to="/Login">
+              <router-link to="/login">
                 <a class="nav-link mx-lg-5" href="#">Login</a>
               </router-link>
             </li>
             <li v-if="isLoggedIn" class="nav-item">
-              <a class="nav-link mx-lg-5" href="#" @click="handleLogout">Logout</a>
+              <a class="nav-link mx-lg-5" href="#" @handleLogout="handleLogout">Logout</a>
             </li>
           </ul>
         </div>

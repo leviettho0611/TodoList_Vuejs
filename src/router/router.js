@@ -1,31 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import TodoApp from '@/pages/TodoApp.vue';
-import HomePage from '@/pages/HomePage.vue';
-import LoginPage from '@/pages/LoginPage.vue';
-import RegisterPage from '@/pages/RegisterPage.vue';
 // import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import LogoutPage from '@/pages/LogoutPage.vue';
-import MyTasks from '@/pages/MyTasks.vue'
-import ProjectPage from '@/pages/ProjectPage.vue'
+import Login from '@/auth/auth-login.page.vue';
+import Register from '@/auth/auth-register.page.vue';
+import Logout from '@/auth/auth-logout.page.vue';
+import HomePage from '@/todolist/todolist-home.page.vue';
+import MyTasks from '@/todolist/todolist-mytask.page.vue'
+import ProjectPage from '@/todolist/todolist-project.page.vue'
+import Tasks from '@/todolist/todolist-tasks.page.vue'
 
 const routes = [
   {
     // component: DefaultLayout,
     children: [
       {
-        path:'/HomePage',
-        name: 'HomePage',
+        path:'/home-page',
+        name: 'home-page',
         component: HomePage
       },
       {
-        path: '/TodoApp/:projectId',
+        path: '/tasks/:projectId',
         // path: '/TodoApp',
-        name: 'TodoApp',
+        name: 'tasks',
         meta: {
           // requiresAuth: true
         },
-        component: TodoApp
+        component: Tasks
       },
       // {
       //   path:'/Assign_tasks',
@@ -33,32 +33,32 @@ const routes = [
       //   component: HomePage
       // },
       {
-        path:'/ProjectPage',
-        name: 'ProjectPage',
+        path:'/project-page',
+        name: 'project-page',
         meta: {
           // requiresAuth: true
         },
         component: ProjectPage
       },
       {
-        path:'/MyTasks',
-        name: 'MyTasks',
+        path:'/my-tasks',
+        name: 'my-tasks',
         component: MyTasks
       },
       {
-        path: '/Login',
-        name: 'LoginPage',
-        component: LoginPage
+        path: '/login',
+        name: 'login',
+        component: Login
       },
       {
-        path: '/Register',
-        name: 'RegisterPage',
-        component: RegisterPage
+        path: '/register',
+        name: 'register',
+        component: Register
       },
       {
-        path:'/Logout',
-        name: 'LogoutPage',
-        component: LogoutPage
+        path:'/logout',
+        name: 'logout',
+        component: Logout
       },
     ]
   }

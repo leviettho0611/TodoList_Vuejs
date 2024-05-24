@@ -195,9 +195,13 @@ export default {
         await getTasks(projectId);
     }
     });
+//     onMounted(async () => {
+//   const {projectId} = route.params
+//   getproject(projectId);
+// });
     const getTasks = async () => {
       try {
-        const response = await axios.get('tasks/${projectId}');
+        const response = await axios.get(`tasks/`);
         // const response = await axios.get('tasks/');
         tasks.value = response.data;
       } catch (error) {
@@ -295,7 +299,7 @@ export default {
     const searchTasks = async () => {
       try {
         const response = await axios.get(
-          `https://662e6c86a7dda1fa378cebbe.mockapi.io/task?search=${searchQuery.value}`,
+          `tasks/?search=${searchQuery.value}`,
           {
             headers: {
               "content-type": "application/json",

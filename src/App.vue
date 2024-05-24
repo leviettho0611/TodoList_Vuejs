@@ -8,7 +8,7 @@
 
 <script>
 
-import DefaultLayout from './layouts/DefaultLayout.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import { ref, onMounted } from 'vue';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
